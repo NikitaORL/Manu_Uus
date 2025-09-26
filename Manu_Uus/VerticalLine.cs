@@ -14,8 +14,7 @@ namespace Manu_Uus
             pList = new List<Point>();
             for (int y = yUp; y <= yDown; y++)
             {
-                Point p = new Point(x, y, sym);
-                pList.Add(p);
+                pList.Add(new Point(x, y, sym));
             }
         }
     }

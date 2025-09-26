@@ -13,9 +13,7 @@ namespace Manu_Uus
         public int y;
         public char sym;
 
-        public Point()
-        {
-        }
+        public Point() { }
 
         public Point(int x, int y, char sym)
         {
@@ -33,21 +31,12 @@ namespace Manu_Uus
 
         public void Move(int offset, Direction direction)
         {
-            if (direction == Direction.RIGHT)
+            switch (direction)
             {
-                x = x + offset;
-            }
-            else if (direction == Direction.LEFT)
-            {
-                x = x - offset;
-            }
-            else if (direction == Direction.UP)
-            {
-                y = y - offset;
-            }
-            else if (direction == Direction.DOWN)
-            {
-                y = y + offset;
+                case Direction.RIGHT: x += offset; break;
+                case Direction.LEFT: x -= offset; break;
+                case Direction.UP: y -= offset; break;
+                case Direction.DOWN: y += offset; break;
             }
         }
 
@@ -59,6 +48,12 @@ namespace Manu_Uus
         public void Draw()
         {
             Console.SetCursorPosition(x, y);
+            Console.Write(sym);
+        }
+
+        public void Draw(int yOffset)
+        {
+            Console.SetCursorPosition(x, y + yOffset);
             Console.Write(sym);
         }
 
