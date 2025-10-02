@@ -13,30 +13,25 @@ namespace Manu_Uus
 {
     static class StartGame
     {
-        public static int Start(string userName)
+        public static int Start(string userName, char snakeChar)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-            int scoreRows = 1; // Верхние строки для отображения очков
+            int scoreRows = 1;
 
             Console.SetWindowSize(80, 25);
             Console.SetBufferSize(80, 25);
 
-            // Очки
-            Score score = new Score(0, 0); // Рисуем счёт в первой строке
+            Score score = new Score(0, 0);
 
-            // Стены с учётом смещения вниз
             Walls walls = new Walls(80, 25 - scoreRows);
-            //Console.ForegroundColor = ConsoleColor.Green;
             walls.Draw(scoreRows);
 
-            // Змейка
-            Point p = new Point(4, 5 + scoreRows, '●');
+            // создаём змейку с выбранным символом
+            Point p = new Point(4, 5 + scoreRows, snakeChar);
             Snake snake = new Snake(p, 4, Direction.RIGHT);
             snake.Draw();
 
-            // Еда
-            FoodCreator foodCreator = new FoodCreator(80, 25 - scoreRows, '$'); //⚠
+            FoodCreator foodCreator = new FoodCreator(80, 25 - scoreRows, '$');
             Point food = foodCreator.CreateFood();
             food.y += scoreRows;
             food.Draw();
@@ -50,7 +45,7 @@ namespace Manu_Uus
 
                 if (snake.Eat(food))
                 {
-                    score.Add(10); // +10 очков
+                    score.Add(10);
                     food = foodCreator.CreateFood();
                     food.y += scoreRows;
                     food.Draw();
@@ -60,7 +55,7 @@ namespace Manu_Uus
                     snake.Move();
                 }
 
-                Thread.Sleep(100); // Скорость змейки
+                Thread.Sleep(100);
 
                 if (Console.KeyAvailable)
                 {
@@ -70,7 +65,7 @@ namespace Manu_Uus
             }
 
             WriteGameOver(scoreRows, userName, score.GetValue());
-            return score.GetValue(); // возвращаем итоговый счёт
+            return score.GetValue();
         }
 
         static void WriteGameOver(int yOffset, string userName, int score)
@@ -79,7 +74,6 @@ namespace Manu_Uus
             int y = 8 + yOffset;
             Console.ForegroundColor = ConsoleColor.Red;
 
-            Console.SetCursorPosition(xOffset, y++);
             WriteText("============================", xOffset, y++);
             WriteText(" M Ä N G  L Õ P E T A N U D ", xOffset + 1, y++);
             WriteText("============================", xOffset, y++);

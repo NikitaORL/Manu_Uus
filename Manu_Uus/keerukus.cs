@@ -7,37 +7,32 @@ using System.Threading.Tasks;
 using System;
 using System.Threading;
 
+
 namespace Manu_Uus
 {
     public static class Keerukus
     {
-        // Определяем сложность и запускаем игру
-        public static int MääraKeerukus(string keerukus, string userName)
+        public static int MääraKeerukus(string keerukus, string userName, char snakeChar)
         {
             try
             {
-                // ==================== KERGE ====================
                 if (keerukus == "K")
                 {
-                    return StartSnake(userName, 150, ConsoleColor.Green);
+                    return StartSnake(userName, 150, ConsoleColor.Green, snakeChar);
                 }
-                // ==================== TAVALINE ====================
                 else if (keerukus == "M")
                 {
-                    // Используем уже готовую обычную игру
-                    int finalScore = StartGame.Start(userName);
-                    WriteGameOver(1, userName, finalScore); //  MÄNG LÕPETANUD
+                    int finalScore = StartGame.Start(userName, snakeChar);
+                    WriteGameOver(1, userName, finalScore);
                     return finalScore;
                 }
-                // ==================== RASKE ====================
                 else if (keerukus == "R")
                 {
-                    return StartSnake(userName, 50, ConsoleColor.DarkYellow);
+                    return StartSnake(userName, 50, ConsoleColor.DarkYellow, snakeChar);
                 }
-                // ==================== DEMON ====================
                 else if (keerukus == "D")
                 {
-                    return StartSnake(userName, 15, ConsoleColor.Red);
+                    return StartSnake(userName, 15, ConsoleColor.Red, snakeChar);
                 }
                 else
                 {
@@ -54,29 +49,26 @@ namespace Manu_Uus
             }
         }
 
-        // ======= Универсальный запуск змейки для сложностей =======
-        private static int StartSnake(string userName, int speed, ConsoleColor wallsColor)
+        private static int StartSnake(string userName, int speed, ConsoleColor wallsColor, char snakeChar)
         {
             Console.Clear();
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            int scoreRows = 1; // строка для очков
+            int scoreRows = 1;
             Console.SetWindowSize(80, 25);
             Console.SetBufferSize(80, 25);
 
             Score score = new Score(0, 0);
 
-            // Стены
             Walls walls = new Walls(80, 25 - scoreRows);
             Console.ForegroundColor = wallsColor;
             walls.Draw(scoreRows);
 
-            // Змейка
-            Point p = new Point(4, 5 + scoreRows, '●');
+            // змейка с выбранным скином
+            Point p = new Point(4, 5 + scoreRows, snakeChar);
             Snake snake = new Snake(p, 4, Direction.RIGHT);
             snake.Draw();
 
-            // Еда
             FoodCreator foodCreator = new FoodCreator(80, 25 - scoreRows, '$');
             Point food = foodCreator.CreateFood();
             food.y += scoreRows;
@@ -110,11 +102,10 @@ namespace Manu_Uus
                 }
             }
 
-            WriteGameOver(scoreRows, userName, score.GetValue()); // ✅ MÄNG LÕPETANUD
+            WriteGameOver(scoreRows, userName, score.GetValue());
             return score.GetValue();
         }
 
-        // ======= Сообщение о завершении игры =======
         private static void WriteGameOver(int yOffset, string userName, int score)
         {
             int xOffset = 25;

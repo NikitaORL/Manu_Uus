@@ -12,7 +12,7 @@ namespace Manu_Uus
     {
         static void Main(string[] args)
         {
-            string userName = "";  // Имя игрока доступно во всех ветках меню
+            string userName = "";
 
             while (true)
             {
@@ -32,9 +32,12 @@ namespace Manu_Uus
                     {
                         Console.Write("Sisesta oma nimi: ");
                         userName = Console.ReadLine();
-                        Console.Clear();
 
-                        int finalScore = StartGame.Start(userName); // передаём имя
+                        // === новый выбор скина ===
+                        char snakeChar = SnakeSkin.ChooseSkin();
+
+                        Console.Clear();
+                        int finalScore = StartGame.Start(userName, snakeChar);
                         Leaderboard.SaveScore(userName, finalScore);
 
                         Console.WriteLine("Tulemus salvestatud!");
@@ -56,6 +59,9 @@ namespace Manu_Uus
                             userName = Console.ReadLine();
                         }
 
+                        // === выбор скина тоже перед сложностью ===
+                        char snakeChar = SnakeSkin.ChooseSkin();
+
                         Console.Clear();
                         Console.WriteLine("Kerge - K");
                         Console.WriteLine("Tavaline keerukus - M");
@@ -65,7 +71,7 @@ namespace Manu_Uus
 
                         string keerukus = Console.ReadLine().ToUpper();
 
-                        int finalScore = Keerukus.MääraKeerukus(keerukus, userName);
+                        int finalScore = Keerukus.MääraKeerukus(keerukus, userName, snakeChar);
                         if (finalScore > 0)
                         {
                             Leaderboard.SaveScore(userName, finalScore);
@@ -77,7 +83,7 @@ namespace Manu_Uus
                     }
                     else if (input == "0")
                     {
-                        break; // выход из программы
+                        break;
                     }
                     else
                     {

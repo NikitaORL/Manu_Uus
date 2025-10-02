@@ -66,7 +66,7 @@ namespace Manu_Uus
             Point head = GetNextPoint();
             if (head.IsHit(food))
             {
-                food.sym = head.sym;
+                food.sym = pList.Last().sym; // сохраняем символ змейки
                 pList.Add(food);
                 return true;
             }
